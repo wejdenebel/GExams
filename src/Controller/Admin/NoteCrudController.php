@@ -16,11 +16,15 @@ class NoteCrudController extends AbstractCrudController
         return Note::class;
     }
 
-    public function configureFields(string $pageName): iterable
+  /*   public function configureFields(string $pageName): iterable
     {
         return [
             IdField::new('id')->hideOnForm(),
+            AssociationField::new('enseignant') // Affiche une liste déroulante pour sélectionner un enseignant
+                ->setRequired(true),
             AssociationField::new('etudiant') // Affiche une liste déroulante pour sélectionner un étudiant
+                ->setRequired(true),
+            AssociationField::new('matiere') // Affiche une liste déroulante pour sélectionner un matiere
                 ->setRequired(true),
             AssociationField::new('module') // Affiche une liste déroulante pour sélectionner un module
                 ->setRequired(true),
@@ -28,5 +32,5 @@ class NoteCrudController extends AbstractCrudController
                 ->setRequired(true),
             TextField::new('observation') // Affiche un champ pour l'observation
         ];
-    }
+    } */
 }
