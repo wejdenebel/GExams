@@ -36,6 +36,7 @@ final class EtudiantFactory extends PersistentProxyObjectFactory
             'matricule_ET' => self::faker()->realText(10),
             'nom' => self::faker()->lastname(),
             'prenom' => self::faker()->firstname(),
+            'est_admin' => self::faker()->boolean(),
         ];
     }
 

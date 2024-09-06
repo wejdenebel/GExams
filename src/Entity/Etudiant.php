@@ -2,10 +2,10 @@
 
 namespace App\Entity;
 
-use App\Repository\EtudiantRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\EtudiantRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 #[ORM\Entity(repositoryClass: EtudiantRepository::class)]
 class Etudiant
@@ -27,6 +27,9 @@ class Etudiant
     #[ORM\Column(length: 10)]
     private ?string $matricule_ET = null;
 
+    
+    #[ORM\Column(type: 'boolean')]
+    private $estAdmin;
     /**
      * @var Collection<int, Note>
      */
@@ -173,6 +176,48 @@ class Etudiant
     public function setClasse(?Classe $classe): static
     {
         $this->classe = $classe;
+
+        return $this;
+    }
+
+    public function isEstAdmin(): ?bool
+    {
+        return $this->estAdmin;
+    }
+
+    public function setEstAdmin(bool $estAdmin): static
+    {
+        $this->estAdmin = $estAdmin;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, EmploisDuTemps>
+     */
+    public function getEmploisDuTemps(): Collection
+    {
+        return $this->emploisDuTemps;
+    }
+
+    public function addEmploisDuTemp(EmploisDuTemps $emploisDuTemp): static
+    {
+        if (!$this->emploisDuTemps->contains($emploisDuTemp)) {
+            $this->emploisDuTemps->add($emploisDuTemp);
+            $emploisDuTemp->setEtudiant($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEmploisDuTemp(EmploisDuTemps $emploisDuTemp): static
+    {
+        if ($this->emploisDuTemps->removeElement($emploisDuTemp)) {
+            // set the owning side to null (unless already changed)
+            if ($emploisDuTemp->getEtudiant() === $this) {
+                $emploisDuTemp->setEtudiant(null);
+            }
+        }
 
         return $this;
     }

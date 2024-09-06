@@ -2,11 +2,11 @@
 
 namespace App\Entity;
 
-use App\Repository\CoursRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\DBAL\Types\Types;
+use App\Repository\CoursRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 #[ORM\Entity(repositoryClass: CoursRepository::class)]
 class Cours
@@ -32,11 +32,12 @@ class Cours
     #[ORM\ManyToOne(inversedBy: 'cours')]
     private ?Matiere $matiere = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 100)]
     private ?string $nom = null;
 
-    #[ORM\Column]
-    private ?int $credits = null;
+    #[ORM\Column(type: 'integer')]
+    private $credits;
+
 
     #[ORM\Column]
     private ?float $coefficient = null;

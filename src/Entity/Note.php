@@ -33,6 +33,9 @@ class Note
     #[ORM\ManyToOne(inversedBy: 'notes')]
     private ?Cours $cours = null;
 
+    #[ORM\ManyToOne(inversedBy: 'notes')]
+    private ?Semestre $semestre = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -106,6 +109,18 @@ class Note
     public function setCours(?Cours $cours): static
     {
         $this->cours = $cours;
+
+        return $this;
+    }
+
+    public function getSemestre(): ?Semestre
+    {
+        return $this->semestre;
+    }
+
+    public function setSemestre(?Semestre $semestre): static
+    {
+        $this->semestre = $semestre;
 
         return $this;
     }

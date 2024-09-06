@@ -2,10 +2,10 @@
 
 namespace App\Entity;
 
-use App\Repository\SemestreRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\SemestreRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 #[ORM\Entity(repositoryClass: SemestreRepository::class)]
 class Semestre
@@ -15,8 +15,8 @@ class Semestre
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 10)]
-    private ?string $nom = null;
+    #[ORM\Column(type: 'string', length: 50)]
+    private $nom;
 
     /**
      * @var Collection<int, Module>
@@ -36,11 +36,21 @@ class Semestre
     #[ORM\OneToMany(targetEntity: EmploisDuTemps::class, mappedBy: 'semestre')]
     private Collection $emploisDuTemps;
 
+    #[ORM\ManyToOne(inversedBy: 'semestres')]
+    private ?AnneeAcademique $anneeAcademique = null;
+
+    /**
+     * @var Collection<int, Note>
+     */
+    #[ORM\OneToMany(targetEntity: Note::class, mappedBy: 'semestre')]
+    private Collection $notes;
+
     public function __construct()
     {
         $this->modules = new ArrayCollection();
         $this->matieres = new ArrayCollection();
         $this->emploisDuTemps = new ArrayCollection();
+        $this->notes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -148,6 +158,78 @@ class Semestre
             // set the owning side to null (unless already changed)
             if ($emploisDuTemps->getSemestre() === $this) {
                 $emploisDuTemps->setSemestre(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getAnneeAcademique(): ?AnneeAcademique
+    {
+        return $this->anneeAcademique;
+    }
+
+    public function setAnneeAcademique(?AnneeAcademique $anneeAcademique): static
+    {
+        $this->anneeAcademique = $anneeAcademique;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Note>
+     */
+    public function getNotes(): Collection
+    {
+        return $this->notes;
+    }
+
+    public function addNote(Note $note): static
+    {
+        if (!$this->notes->contains($note)) {
+            $this->notes->add($note);
+            $note->setSemestre($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNote(Note $note): static
+    {
+        if ($this->notes->removeElement($note)) {
+            // set the owning side to null (unless already changed)
+            if ($note->getSemestre() === $this) {
+                $note->setSemestre(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, EmploisDuTemps>
+     */
+    public function getEmploisDuTemps(): Collection
+    {
+        return $this->emploisDuTemps;
+    }
+
+    public function addEmploisDuTemp(EmploisDuTemps $emploisDuTemp): static
+    {
+        if (!$this->emploisDuTemps->contains($emploisDuTemp)) {
+            $this->emploisDuTemps->add($emploisDuTemp);
+            $emploisDuTemp->setSemestre($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEmploisDuTemp(EmploisDuTemps $emploisDuTemp): static
+    {
+        if ($this->emploisDuTemps->removeElement($emploisDuTemp)) {
+            // set the owning side to null (unless already changed)
+            if ($emploisDuTemp->getSemestre() === $this) {
+                $emploisDuTemp->setSemestre(null);
             }
         }
 

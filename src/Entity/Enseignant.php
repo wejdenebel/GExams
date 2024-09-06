@@ -235,4 +235,34 @@ class Enseignant
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, EmploisDuTemps>
+     */
+    public function getEmploisDuTemps(): Collection
+    {
+        return $this->emploisDuTemps;
+    }
+
+    public function addEmploisDuTemp(EmploisDuTemps $emploisDuTemp): static
+    {
+        if (!$this->emploisDuTemps->contains($emploisDuTemp)) {
+            $this->emploisDuTemps->add($emploisDuTemp);
+            $emploisDuTemp->setEnseignant($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEmploisDuTemp(EmploisDuTemps $emploisDuTemp): static
+    {
+        if ($this->emploisDuTemps->removeElement($emploisDuTemp)) {
+            // set the owning side to null (unless already changed)
+            if ($emploisDuTemp->getEnseignant() === $this) {
+                $emploisDuTemp->setEnseignant(null);
+            }
+        }
+
+        return $this;
+    }
 }

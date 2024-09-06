@@ -164,4 +164,34 @@ class Matiere
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, EmploisDuTemps>
+     */
+    public function getEmploisDuTemps(): Collection
+    {
+        return $this->emploisDuTemps;
+    }
+
+    public function addEmploisDuTemp(EmploisDuTemps $emploisDuTemp): static
+    {
+        if (!$this->emploisDuTemps->contains($emploisDuTemp)) {
+            $this->emploisDuTemps->add($emploisDuTemp);
+            $emploisDuTemp->setMatiere($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEmploisDuTemp(EmploisDuTemps $emploisDuTemp): static
+    {
+        if ($this->emploisDuTemps->removeElement($emploisDuTemp)) {
+            // set the owning side to null (unless already changed)
+            if ($emploisDuTemp->getMatiere() === $this) {
+                $emploisDuTemp->setMatiere(null);
+            }
+        }
+
+        return $this;
+    }
 }

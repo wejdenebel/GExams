@@ -164,4 +164,26 @@ class Classe
 
         return $this;
     }
+
+    public function addEmploisDuTemp(EmploisDuTemps $emploisDuTemp): static
+    {
+        if (!$this->emploisDuTemps->contains($emploisDuTemp)) {
+            $this->emploisDuTemps->add($emploisDuTemp);
+            $emploisDuTemp->setClasse($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEmploisDuTemp(EmploisDuTemps $emploisDuTemp): static
+    {
+        if ($this->emploisDuTemps->removeElement($emploisDuTemp)) {
+            // set the owning side to null (unless already changed)
+            if ($emploisDuTemp->getClasse() === $this) {
+                $emploisDuTemp->setClasse(null);
+            }
+        }
+
+        return $this;
+    }
 }
