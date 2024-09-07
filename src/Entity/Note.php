@@ -27,6 +27,15 @@ class Note
     #[ORM\JoinColumn(nullable: false)]
     private $module;
 
+    #[ORM\ManyToOne(inversedBy: 'notes')]
+    private ?Matiere $matiere = null;
+
+    #[ORM\ManyToOne(inversedBy: 'notes')]
+    private ?Cours $cours = null;
+
+    #[ORM\ManyToOne(inversedBy: 'notes')]
+    private ?Semestre $semestre = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -76,6 +85,42 @@ class Note
     public function setModule(?module $module): self
     {
         $this->module = $module;
+
+        return $this;
+    }
+
+    public function getMatiere(): ?Matiere
+    {
+        return $this->matiere;
+    }
+
+    public function setMatiere(?Matiere $matiere): static
+    {
+        $this->matiere = $matiere;
+
+        return $this;
+    }
+
+    public function getCours(): ?Cours
+    {
+        return $this->cours;
+    }
+
+    public function setCours(?Cours $cours): static
+    {
+        $this->cours = $cours;
+
+        return $this;
+    }
+
+    public function getSemestre(): ?Semestre
+    {
+        return $this->semestre;
+    }
+
+    public function setSemestre(?Semestre $semestre): static
+    {
+        $this->semestre = $semestre;
 
         return $this;
     }

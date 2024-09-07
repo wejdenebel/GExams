@@ -1,0 +1,49 @@
+{
+    "name": "Symfony Development",
+    "dockerComposeFile": [
+        "compose.yaml"
+    ],
+    "service": "www",
+    "context": "..",
+    "workspaceFolder": "/var/www/exam",
+    "remoteEnv": {
+        "APP_ENV": "dev",
+        "APP_DEBUG": "1",
+        "DATABASE_URL": "mysql://root:mourad@database:3306/exam",
+        "XDEBUG_MODE": "debug,develop",
+        "XDEBUG_CONFIG": "client_host=host.docker.internal"
+    },
+    "extensions": [
+        "felixfbecker.php-debug",
+        "felixfbecker.php-intellisense",
+        "mehedidracula.php-namespace-resolver",
+        "junstyle.php-cs-fixer",
+        "bmewburn.vscode-intelephense-client",
+        "fabpot.vscode-symfony",
+        "sianglim.slim",
+        "neilbrayfield.php-docblocker",
+        "mikestead.dotenv",
+        "ms-azuretools.vscode-docker",
+        "xdebug.php-debug",
+        "TheNouillet.symfony-vscode",
+        "ms-vscode.makefile-tools"
+    ],
+    "settings": {
+        "docker.host": "tcp://localhost:2375",
+        "docker.remotePlatform": {
+            "os": "linux"
+        },
+        "php.validate.executablePath": "/usr/local/bin/php",
+        "php.debug.executablePath": "/usr/local/bin/php",
+        "php.debug.idekey": "VSCODE"
+    },
+    "build": {
+        "args": {
+            "VARIANT": "bullseye"
+        }
+    },
+    "mounts": [
+        "source=${localWorkspaceFolder}/.vscode,target=/root/.vscode,type=bind",
+        "source=${localWorkspaceFolder}/data,target=/var/www/exam/data,type=bind"
+    ]
+}

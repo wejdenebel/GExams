@@ -2,10 +2,10 @@
 
 namespace App\Entity;
 
-use App\Repository\EtudiantRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\EtudiantRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 #[ORM\Entity(repositoryClass: EtudiantRepository::class)]
 class Etudiant
@@ -27,15 +27,28 @@ class Etudiant
     #[ORM\Column(length: 10)]
     private ?string $matricule_ET = null;
 
+    
+    #[ORM\Column(type: 'boolean')]
+    private $estAdmin;
     /**
      * @var Collection<int, Note>
      */
     #[ORM\OneToMany(targetEntity: Note::class, mappedBy: 'etudiant')]
     private Collection $notes;
 
+    /**
+     * @var Collection<int, EmploisDuTemps>
+     */
+    #[ORM\OneToMany(targetEntity: EmploisDuTemps::class, mappedBy: 'etudiant')]
+    private Collection $emploisDuTemps;
+
+    #[ORM\ManyToOne(inversedBy: 'etudiants')]
+    private ?Classe $classe = null;
+
     public function __construct()
     {
         $this->notes = new ArrayCollection();
+        $this->emploisDuTemps = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -124,4 +137,89 @@ class Etudiant
     {
         return $this->nom . ' ' . $this->prenom; // Affiche le nom complet de l'étudiant
     }
+
+    /**
+     * @return Collection<int, EmploisDuTemps>
+     */
+    public function getEmplois(): Collection
+    {
+        return $this->emploisDuTemps;
+    }
+
+    public function addEmploi(EmploisDuTemps $emploisDuTemps): static
+    {
+        if (!$this->emploisDuTemps->contains($emploisDuTemps)) {
+            $this->emploisDuTemps->add($emploisDuTemps);
+            $emploisDuTemps->setEtudiant($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEmploi(EmploisDuTemps $emploisDuTemps): static
+    {
+        if ($this->emploisDuTemps->removeElement($emploisDuTemps)) {
+            // set the owning side to null (unless already changed)
+            if ($emploisDuTemps->getEtudiant() === $this) {
+                $emploisDuTemps->setEtudiant(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getClasse(): ?Classe
+    {
+        return $this->classe;
+    }
+
+    public function setClasse(?Classe $classe): static
+    {
+        $this->classe = $classe;
+
+        return $this;
+    }
+
+    public function isEstAdmin(): ?bool
+    {
+        return $this->estAdmin;
+    }
+
+    public function setEstAdmin(bool $estAdmin): static
+    {
+        $this->estAdmin = $estAdmin;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, EmploisDuTemps>
+     */
+    public function getEmploisDuTemps(): Collection
+    {
+        return $this->emploisDuTemps;
+    }
+
+    public function addEmploisDuTemp(EmploisDuTemps $emploisDuTemp): static
+    {
+        if (!$this->emploisDuTemps->contains($emploisDuTemp)) {
+            $this->emploisDuTemps->add($emploisDuTemp);
+            $emploisDuTemp->setEtudiant($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEmploisDuTemp(EmploisDuTemps $emploisDuTemp): static
+    {
+        if ($this->emploisDuTemps->removeElement($emploisDuTemp)) {
+            // set the owning side to null (unless already changed)
+            if ($emploisDuTemp->getEtudiant() === $this) {
+                $emploisDuTemp->setEtudiant(null);
+            }
+        }
+
+        return $this;
+    }
+
 }

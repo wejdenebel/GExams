@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\EmploisDuTemps;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
@@ -69,6 +70,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Filiere', 'fas fa-list', Filiere::class);
         yield MenuItem::linkToCrud('Semestre', 'fas fa-list', Semestre::class);
         yield MenuItem::linkToCrud('Enseignant', 'fas fa-list', Enseignant::class);
+        yield MenuItem::linkToRoute('EmploisDuTemps du temps', 'fa fa-calendar', 'admin_calendar');
         yield MenuItem::linkToCrud('Module', 'fas fa-list', Module::class);
         yield MenuItem::linkToCrud('Etudiant', 'fas fa-list', Etudiant::class);
         yield MenuItem::linkToCrud('Note', 'fas fa-list', Note::class);
